@@ -1,8 +1,8 @@
  function sendToLine() {
   // LINE Notifyのアクセストークンを設定
-   //var accessToken2 = 'xkDlu0qkSATPIP29JVgXEJV2CWcxfVklDmyDAPg30gu';//幹部
- //var accessToken = 'i8i65IMG34Qh7H8FfJMWXNeo8jsXCKXEeqidzCBSYqg';//個人
- var accessToken = 'XlWrrP9qIbObLekdGbFQ6b6pMO5M0MY9ZhZwIg6CGXp';//全体
+   //var accessToken2 = 'LineNotifyのアクセストークン';//幹部
+ //var accessToken = 'LineNotifyのアクセストークン';//個人
+ var accessToken = 'LineNotifyのアクセストークン';//全体
 
 
   var d =  new Date(); // 現在の日付と時刻
@@ -19,9 +19,9 @@
   }
 
   
-  var sheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE").getSheetByName(mon+"月予定表"); // シート名を適切に変更
-  var sity = '572-0833,JP'
-  var api= 'c4f4e1c3c9f27c64efa04d1e7497450b'
+  var sheet = SpreadsheetApp.openById("任意のSpredId").getSheetByName(シート名); // シート名を適切に変更
+  var sity = '調べたい住所の郵便番号'
+  var api= 'OpenWeatherMapのapiキー'
   var requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?zip='+sity+'&units=metric&lang=ja&appid='+api;
 
   var response = UrlFetchApp.fetch(requestUrl).getContentText();
@@ -70,9 +70,9 @@
   MIN = (Math.round(MIN*10))/10
   MAX = (Math.round(MAX*10))/10
 
-  var spreadsheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE");
+  var spreadsheet = SpreadsheetApp.openById("任意のSpredId");
   var sheet2 = spreadsheet.getSheetByName('天気予報');
-  sheet2.getRange(1,1).setValue('Neyagawa')
+  sheet2.getRange(1,1).setValue('町名')
   sheet2.getRange(2, 1, weatherInfo.length, weatherInfo[0].length).setValues(weatherInfo);
 
   // データを保持するための配列を初期化。この変数は最終的にメッセージとして送るための変数
@@ -152,16 +152,16 @@
 //幹部ラインに次の日の参加者と二回生以上の人数を表示する関数
 function sendToLine2(){
  // LINE Notifyのアクセストークンを設定
-  var accessToken2 = 'xkDlu0qkSATPIP29JVgXEJV2CWcxfVklDmyDAPg30gu';//幹部
-  //var accessToken2 = 'i8i65IMG34Qh7H8FfJMWXNeo8jsXCKXEeqidzCBSYqg';//個人
-  //var accessToken = 'XlWrrP9qIbObLekdGbFQ6b6pMO5M0MY9ZhZwIg6CGXp';//全体
+  var accessToken2 = 'LineNotifyのアクセストークン';//幹部
+  //var accessToken2 = 'LineNotifyのアクセストークン';//個人
+  //var accessToken = 'LineNotifyのアクセストークン';//全体
 
   var d =  new Date(); // 現在の日付と時刻
   var currentDate = d.getDate() //現在の日付部分を所得
   var mon = d.getMonth()
   Logger.log(mon+1)
   
-  var sheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE").getSheetByName((mon+1)+"月予定表"); // シート名を適切に変更
+  var sheet = SpreadsheetApp.openById("任意のSpredId").getSheetByName("任意のSpredSheetId"); // シート名を適切に変更
   var d =  new Date(); // 現在の日付と時刻
   var currentDate = d.getDate()
   // データを保持するための配列を初期化
@@ -211,7 +211,7 @@ function sendToLine2(){
 }
 
 function soot(charsets){
-  var sheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE").getSheetByName("配列用部員名簿");
+  var sheet = SpreadsheetApp.openById("任意のSpredId").getSheetByName("任意のSpredSheetId");
   var lastRow = sheet.getLastRow();
   var range = sheet.getRange(1, 1, lastRow, 2); 
   var values = range.getValues();
@@ -233,9 +233,9 @@ function soot(charsets){
 //日曜日の時は予定表入力を促すメッセージを送信する関数
 function sanday(){
  // LINE Notifyのアクセストークンを設定
-   //var accessToken2 = 'xkDlu0qkSATPIP29JVgXEJV2CWcxfVklDmyDAPg30gu';//幹部
-  //var accessToken2 = 'i8i65IMG34Qh7H8FfJMWXNeo8jsXCKXEeqidzCBSYqg';//個人
-  var accessToken2 = 'XlWrrP9qIbObLekdGbFQ6b6pMO5M0MY9ZhZwIg6CGXp';//全体
+   //var accessToken2 = 'LineNotifyのアクセストークン';//幹部
+  //var accessToken2 = 'LineNotifyのアクセストークン';//個人
+  var accessToken2 = 'LineNotifyのアクセストークン';//全体
 
   // スプレッドシートのシートとセルの情報を設定
   var d =  new Date(); // 現在の日付と時刻
@@ -261,7 +261,7 @@ function sanday(){
 //2回生以上が何人いるかをカウントする関数
 function soot2(charsets){
  
-  var sheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE").getSheetByName("配列用部員名簿");
+  var sheet = SpreadsheetApp.openById("任意のSpredId").getSheetByName("任意のSpredSheetId");
   var lastRow = sheet.getLastRow();
   var range = sheet.getRange(1, 1, lastRow, 2); 
   var values = range.getValues();
@@ -282,8 +282,8 @@ function soot2(charsets){
 //シート自動追加関数
 function addsite(){
   
-  var spreadsheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE");
-  var sheet2 =spreadsheet.getSheetByName('予定表ベースシート6週');
+  var spreadsheet = SpreadsheetApp.openById("任意のSpredId");
+  var sheet2 =spreadsheet.getSheetByName('任意のSpredSheetId');
   var newSheet2 = sheet2.copyTo(spreadsheet);
   var d =  new Date(); // 現在の日付と時刻
   var currentDate = d.getDate() //現在の日付部分を所得
@@ -296,7 +296,7 @@ function addsite(){
   else{
     mon+=2;
   }
-  var sh2= newSheet2.setName(mon+'月予定表');
+  var sh2= newSheet2.setName('任意のSpredSheet');
  
   if(mon== 4 || mon==6 || mon==9 || mon==11){
     monthcount=30;
@@ -357,10 +357,10 @@ function addsite(){
     }
   }
   if(days[25][0]===null){
-    var sheet = spreadsheet.getSheetByName('予定表ベースシート5週');
+    var sheet = spreadsheet.getSheetByName('任意のSpredSheetId');
     var newSheet = sheet.copyTo(spreadsheet);
     sheet2.deleteSheet(sh2);
-    var sh = newSheet.setName(mon+'月予定表');
+    var sh = newSheet.setName('任意のSpredSheetId');
     sheet.copyTo(sh);
   }
   console.log("daysの値"+days)
