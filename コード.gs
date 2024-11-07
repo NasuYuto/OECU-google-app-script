@@ -106,24 +106,20 @@
             charsets = soot(charsets);//上で分けた単語群を並び替えるためにsoot関数に移動
             for(var i=0;i<charsets.length;i++){
             cellValues.push('\n'+charsets[i]) //cellValuesに並び替えた単語を改行しながら代入
-          }
-
-            
+            }
           }
         }
         
         if(dayWeekstr==='月'||dayWeekstr==='水'||dayWeekstr === '日'|| dayWeekstr === '土'){//休日の場合セルだった場合セルの内容を表示するだけ
-          
           if(values[row][col+1].length==0.0){//何もなければフラグをセット
             flag=1
           }
           cellValues.push(values[row][col+1]);
         }
-        
-        
       }
     }
   }
+
   if(morning=='Rain')morning='☔';
   if(morning=='Clouds')morning='☁';
   if(morning=='Clear')morning='☀';
@@ -133,6 +129,7 @@
   if(night=='Rain')night='☔';
   if(night=='Clouds')night='☁';
   if(night=='Clear')night='☀';
+
   if((dayWeekstr==='火'||dayWeekstr==='木'||dayWeekstr==='金' ) && flag===0){//平日の場合のメッセージ処理
     sendLineNotification(accessToken,'\n'+ year+'年'+mon+'月'+currentDate+'日'+'\n本日の参加者:\n' +cellValues + '\n\n最低気温: '+MIN+' ℃\n最高気温: ' +MAX+'℃\n\n'+' 朝 | 昼 | 夜\n－－－－－\n'+morning+'|'+san+'|'+night);
   }
@@ -140,16 +137,14 @@
   if((dayWeekstr==='月'||dayWeekstr==='水'||dayWeekstr === '日'|| dayWeekstr === '土')&& flag===0){//休日の場合のメッセージ処理
     sendLineNotification(accessToken,'\nおはようございます!\n本日は\n'+cellValues+'\n\nです!'+ '\n\n最低気温: '+MIN+' ℃\n最高気温: ' +MAX+'℃\n\n'+' 朝 | 昼 | 夜\n－－－－－\n'+morning+'|'+san+'|'+night);
   }
-  // 条件に一致したセルの値をログに出力
-
+  
   //sendLineNotification(accessToken,"メンテナンス中")
   Logger.log(cellValues);
-
 }
 
 //幹部ラインに次の日の参加者と二回生以上の人数を表示する関数
 function sendToLine2(){
- // LINE Notifyのアクセストークンを設定
+  // LINE Notifyのアクセストークンを設定
   var accessToken2 = 'xkDlu0qkSATPIP29JVgXEJV2CWcxfVklDmyDAPg30gu';//幹部
   //var accessToken2 = 'i8i65IMG34Qh7H8FfJMWXNeo8jsXCKXEeqidzCBSYqg';//個人
   //var accessToken = 'XlWrrP9qIbObLekdGbFQ6b6pMO5M0MY9ZhZwIg6CGXp';//全体
@@ -162,8 +157,7 @@ function sendToLine2(){
   var sheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE").getSheetByName((mon+1)+"月予定表"); // シート名を適切に変更
   var d =  new Date(); // 現在の日付と時刻
   var currentDate = d.getDate()
-  // データを保持するための配列を初期化
-  var cellValues = [];
+  var cellValues = []; // データを保持するための配列を初期化
   var flag = 0
   // セルの範囲を指定（A1からO32までのセル）
   var range = sheet.getRange(1, 1, 32, 15); // 32行 x 15列
@@ -171,11 +165,11 @@ function sendToLine2(){
   var dayWeek = date.getDay();
   var dayWeekstr = ["日","月","火","水","木","金","土"][dayWeek];
   Logger.log(dayWeekstr);
+
   // セルの値を取得し、日付と比較
   var values = range.getValues();
   for (var row = 0; row < values.length; row++) {
     for (var col = 0; col < values[row].length; col++) {
-    
       //ここまではsendToLine関数と同じ処理
       // 日付が条件を満たす場合に通知を送信
       if (currentDate === values[row][col]) {
@@ -192,17 +186,12 @@ function sendToLine2(){
           }
           var jou = soot2(charsets)//soot2関数で2回生以上が何人いるかをカウントしjouに格納する
         }
-        
-        
       }
     }
   }
   if((dayWeekstr==='月'||dayWeekstr==='水'||dayWeekstr==='木') && flag===0){
     sendLineNotification(accessToken2, '\n明日の参加者:\n ' + cellValues + '\n\n' + '2年生以上は'+jou+'人です');
   }
-
-  // 条件に一致したセルの値をログに出力
-
 
   Logger.log(cellValues);
 
@@ -240,8 +229,6 @@ function sanday(){
   var currentDate = d.getDate()
   // データを保持するための配列を初期化
   var cellValues = [];
-  // セルの範囲を指定（A1からO32までのセル）
-  
   var date = new Date()
   var dayWeek = date.getDay();
   var dayWeekstr = ["日","月","火","水","木","金","土"][dayWeek];
@@ -251,14 +238,10 @@ function sanday(){
   if(dayWeekstr==='日' ){
     sendLineNotification(accessToken2, '\n【通知】\n2週間後までの予定表入力をお願いします!');
   }
-
-  // 条件に一致したセルの値をログに出力
-
 }
 
 //2回生以上が何人いるかをカウントする関数
 function soot2(charsets){
- 
   var sheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE").getSheetByName("配列用部員名簿");
   var lastRow = sheet.getLastRow();
   var range = sheet.getRange(1, 1, lastRow, 2); 
@@ -279,7 +262,6 @@ function soot2(charsets){
 
 //カレンダーシート自動追加関数
 function addsite(){
-  
   var spreadsheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE");
   var sheet2 =spreadsheet.getSheetByName('予定表ベースシート6週');
   var newSheet2 = sheet2.copyTo(spreadsheet);
@@ -308,8 +290,6 @@ function addsite(){
   else if(mon==2){
     monthcount=28;
   }
-
-
   
   var month = d.getMonth();  // 1月が0、12月が11
   var day = 1;
@@ -320,11 +300,12 @@ function addsite(){
   else{
     month+=1;
   }
-  Logger.log(month)
+
   var dayOfWeek = getDayOfWeek(year, month, day);
   var range = sh2.getRange(2, 2, 1, 15); 
   var values = range.getValues();
   var days = new Array(30);
+
   for (var i = 0; i < days.length; i++) {
     days[i] = new Array(13);
   }
@@ -333,12 +314,14 @@ function addsite(){
   var flag=0;
   Logger.log(days)
   var weekcount=0;
+
   for(i=0;i<=14;i+=2){
     if(values[0][i]==dayOfWeek){
       weekcount=i;
       break;
     }
   }
+
   for(i=0;i<6;i++){
     for(j=0;j<13;j+=2){
       if(i==0 && flag==0){
@@ -354,6 +337,7 @@ function addsite(){
       count+=1;
     }
   }
+
   if(days[25][0]===null){
     var sheet = spreadsheet.getSheetByName('予定表ベースシート5週');
     var newSheet = sheet.copyTo(spreadsheet);
@@ -361,15 +345,14 @@ function addsite(){
     var sh = newSheet.setName(mon+'月予定表');
     sheet.copyTo(sh);
   }
+
   console.log("daysの値"+days)
   console.log("元シートの値"+sh2.getRange(3,2,30,13).getValue)
-  var existingData = sh2.getRange(3,2,30,13).getValue();
-  var updatedData = existingData.concat(days);
-  sh2.getRange(3,2,30,13).setValues(updatedData)
-
-  //sh2.getRange(3,2,30,13).setValues(days);//dayの中身は日付の数字だけだが、予定欄のところもベースシートの内容を置いてあげれば新たに作成されたカレンダーに予定の内容が書き込まれそう　
+  // var existingData = sh2.getRange(3,2,30,13).getValue();
+  // var updatedData = existingData.concat(days);
+  // sh2.getRange(3,2,30,13).setValues(updatedData)
+  sh2.getRange(3,2,30,13).setValues(days);//dayの中身は日付の数字だけだが、予定欄のところもベースシートの内容を置いてあげれば新たに作成されたカレンダーに予定の内容が書き込まれそう　
 }
-
 
 function getDayOfWeek(year, month, day) {
     var daysOfWeek = ['日', '月', '火', '水', '木', '金', '土']
@@ -382,6 +365,7 @@ function getDayOfWeek(year, month, day) {
 function sendToLine2log(){
   console.log("null")
 }
+
 function sandaylog(){
   console.log("null")
 }
