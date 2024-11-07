@@ -1,35 +1,37 @@
  function sendToLine() {
   // LINE Notifyのアクセストークンを設定
-   //var accessToken2 = 'LineNotifyのアクセストークン';//幹部
- //var accessToken = 'LineNotifyのアクセストークン';//個人
- var accessToken = 'LineNotifyのアクセストークン';//全体
-
+  //var accessToken2 = 'xkDlu0qkSATPIP29JVgXEJV2CWcxfVklDmyDAPg30gu';//幹部
+  //var accessToken = 'i8i65IMG34Qh7H8FfJMWXNeo8jsXCKXEeqidzCBSYqg';//個人
+  var accessToken = 'XlWrrP9qIbObLekdGbFQ6b6pMO5M0MY9ZhZwIg6CGXp';//全体
 
   var d =  new Date(); // 現在の日付と時刻
   var currentDate = d.getDate()//現在の日付部分を所得
   Logger.log(currentDate)
   var mon = d.getMonth()
+  if((mon+=1)==13){//月数字ずれの修正
+    mon=1;
+  }
   var year = d.getFullYear();  
   var time,night,morning,san,tenkiflag=[0,0,0];
+  var cellValues = [];// データを保持するための配列を初期化。この変数は最終的にメッセージとして送るための変数
+  var flag = 0 //カレンダーのセルに文字が入っているかどうかの判断に使われる。例えば指定したセルの中に文字が入っていなければそれは通知する必要がないのでflag=1をセットする。
+  var range = sheet.getRange(1, 1, 32, 15); // 32行 x 15列 セルの範囲を指定（A1からO32までのセル）
   tenkiflag[0]=0;
   tenkiflag[1]=0;
   tenkiflag[2]=0;  
-  if((mon+=1)==13){
-    mon=1;
-  }
-
   
-  var sheet = SpreadsheetApp.openById("任意のSpredId").getSheetByName(シート名); // シート名を適切に変更
-  var sity = '調べたい住所の郵便番号'
-  var api= 'OpenWeatherMapのapiキー'
+  
+  var sheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE").getSheetByName(mon+"月予定表"); // シート名を適切に変更
+  var sity = '572-0833,JP'
+  var api= 'c4f4e1c3c9f27c64efa04d1e7497450b'
   var requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?zip='+sity+'&units=metric&lang=ja&appid='+api;
 
   var response = UrlFetchApp.fetch(requestUrl).getContentText();
   var json = JSON.parse(response);
  
   var weatherInfo = [];
-  var MIN=json['list'][0]['main']['temp_min'];
-  var MAX=json['list'][0]['main']['temp_max'];
+  var MIN=json['list'][0]['main']['temp_min'];//最低気温
+  var MAX=json['list'][0]['main']['temp_max'];//最高気温
   for(let i=0;i<8;i++){
     weatherInfo[i] = [];
     //Open Weather Mapから取得した天気予報の中から必要な情報を2次元配列に書き込み
@@ -38,7 +40,7 @@
  
    if((time[1]=='06:00:00'||time[1]=='09:00:00') && tenkiflag[0]!=1){
         morning=json['list'][i]['weather'][0]['main'];
-        if(morning=='Rain'){
+        if(morning=='Rain'){//雨が少しでも含まれている場合天気マークを雨にしたいから
           tenkiflag[0]=1;
         }
    }
@@ -55,11 +57,13 @@
         tenkiflag[2]=1;
       }
    }
-    weatherInfo[i][1] = json['list'][i]['weather'][0]['main'];
+    weatherInfo[i][1] = json['list'][i]['weather'][0]['main'];//スプレッドシートに出力記録用
     weatherInfo[i][2] = json['list'][i]['main']['temp_min'];
     weatherInfo[i][3] = json['list'][i]['main']['temp_max'];
     weatherInfo[i][4] = json['list'][i]['main']['humidity'];
     weatherInfo[i][5] = json['list'][i]['main']['pressure'];
+
+    //最低気温最高気温のソート
     if(MIN>json['list'][i]['main']['temp_min']){
       MIN=json['list'][i]['main']['temp_min'];
     }
@@ -70,18 +74,12 @@
   MIN = (Math.round(MIN*10))/10
   MAX = (Math.round(MAX*10))/10
 
-  var spreadsheet = SpreadsheetApp.openById("任意のSpredId");
+  //天気情報をスプレッドシートに出力
+  var spreadsheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE");
   var sheet2 = spreadsheet.getSheetByName('天気予報');
-  sheet2.getRange(1,1).setValue('町名')
+  sheet2.getRange(1,1).setValue('Neyagawa')
   sheet2.getRange(2, 1, weatherInfo.length, weatherInfo[0].length).setValues(weatherInfo);
 
-  // データを保持するための配列を初期化。この変数は最終的にメッセージとして送るための変数
-  var cellValues = [];
-
-  var flag = 0 //カレンダーのセルに文字が入っているかどうかの判断に使われる。例えば指定したセルの中に文字が入っていなければそれは通知する必要がないのでflag=1をセットする。
-
-  // セルの範囲を指定（A1からO32までのセル）
-  var range = sheet.getRange(1, 1, 32, 15); // 32行 x 15列
 
 //曜日設定
   var date = new Date()
@@ -152,16 +150,16 @@
 //幹部ラインに次の日の参加者と二回生以上の人数を表示する関数
 function sendToLine2(){
  // LINE Notifyのアクセストークンを設定
-  var accessToken2 = 'LineNotifyのアクセストークン';//幹部
-  //var accessToken2 = 'LineNotifyのアクセストークン';//個人
-  //var accessToken = 'LineNotifyのアクセストークン';//全体
+  var accessToken2 = 'xkDlu0qkSATPIP29JVgXEJV2CWcxfVklDmyDAPg30gu';//幹部
+  //var accessToken2 = 'i8i65IMG34Qh7H8FfJMWXNeo8jsXCKXEeqidzCBSYqg';//個人
+  //var accessToken = 'XlWrrP9qIbObLekdGbFQ6b6pMO5M0MY9ZhZwIg6CGXp';//全体
 
   var d =  new Date(); // 現在の日付と時刻
   var currentDate = d.getDate() //現在の日付部分を所得
   var mon = d.getMonth()
   Logger.log(mon+1)
   
-  var sheet = SpreadsheetApp.openById("任意のSpredId").getSheetByName("任意のSpredSheetId"); // シート名を適切に変更
+  var sheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE").getSheetByName((mon+1)+"月予定表"); // シート名を適切に変更
   var d =  new Date(); // 現在の日付と時刻
   var currentDate = d.getDate()
   // データを保持するための配列を初期化
@@ -211,7 +209,7 @@ function sendToLine2(){
 }
 
 function soot(charsets){
-  var sheet = SpreadsheetApp.openById("任意のSpredId").getSheetByName("任意のSpredSheetId");
+  var sheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE").getSheetByName("配列用部員名簿");
   var lastRow = sheet.getLastRow();
   var range = sheet.getRange(1, 1, lastRow, 2); 
   var values = range.getValues();
@@ -233,9 +231,9 @@ function soot(charsets){
 //日曜日の時は予定表入力を促すメッセージを送信する関数
 function sanday(){
  // LINE Notifyのアクセストークンを設定
-   //var accessToken2 = 'LineNotifyのアクセストークン';//幹部
-  //var accessToken2 = 'LineNotifyのアクセストークン';//個人
-  var accessToken2 = 'LineNotifyのアクセストークン';//全体
+  //var accessToken2 = 'xkDlu0qkSATPIP29JVgXEJV2CWcxfVklDmyDAPg30gu';//幹部
+  //var accessToken2 = 'i8i65IMG34Qh7H8FfJMWXNeo8jsXCKXEeqidzCBSYqg';//個人
+  var accessToken2 = 'XlWrrP9qIbObLekdGbFQ6b6pMO5M0MY9ZhZwIg6CGXp';//全体
 
   // スプレッドシートのシートとセルの情報を設定
   var d =  new Date(); // 現在の日付と時刻
@@ -261,7 +259,7 @@ function sanday(){
 //2回生以上が何人いるかをカウントする関数
 function soot2(charsets){
  
-  var sheet = SpreadsheetApp.openById("任意のSpredId").getSheetByName("任意のSpredSheetId");
+  var sheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE").getSheetByName("配列用部員名簿");
   var lastRow = sheet.getLastRow();
   var range = sheet.getRange(1, 1, lastRow, 2); 
   var values = range.getValues();
@@ -279,11 +277,11 @@ function soot2(charsets){
   Logger.log(charsets[2])
 }
 
-//シート自動追加関数
+//カレンダーシート自動追加関数
 function addsite(){
   
-  var spreadsheet = SpreadsheetApp.openById("任意のSpredId");
-  var sheet2 =spreadsheet.getSheetByName('任意のSpredSheetId');
+  var spreadsheet = SpreadsheetApp.openById("1srKDoDsifZavX5e4fcVpAqlVo-uS-k_4qGvdHfbuaLE");
+  var sheet2 =spreadsheet.getSheetByName('予定表ベースシート6週');
   var newSheet2 = sheet2.copyTo(spreadsheet);
   var d =  new Date(); // 現在の日付と時刻
   var currentDate = d.getDate() //現在の日付部分を所得
@@ -296,7 +294,7 @@ function addsite(){
   else{
     mon+=2;
   }
-  var sh2= newSheet2.setName('任意のSpredSheet');
+  var sh2= newSheet2.setName(mon+'月予定表');
  
   if(mon== 4 || mon==6 || mon==9 || mon==11){
     monthcount=30;
@@ -357,10 +355,10 @@ function addsite(){
     }
   }
   if(days[25][0]===null){
-    var sheet = spreadsheet.getSheetByName('任意のSpredSheetId');
+    var sheet = spreadsheet.getSheetByName('予定表ベースシート5週');
     var newSheet = sheet.copyTo(spreadsheet);
     sheet2.deleteSheet(sh2);
-    var sh = newSheet.setName('任意のSpredSheetId');
+    var sh = newSheet.setName(mon+'月予定表');
     sheet.copyTo(sh);
   }
   console.log("daysの値"+days)
