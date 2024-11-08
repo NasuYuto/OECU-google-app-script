@@ -111,7 +111,7 @@ function sendToLine() {
           }
         }
         
-        if(dayWeekstr==='月'||dayWeekstr==='水'||dayWeekstr === '日'|| dayWeekstr === '土'){//休日の場合セルだった場合セルの内容を表示するだけ
+        if(dayWeekstr === '日'|| dayWeekstr === '土'){//休日のセルだった場合セルの内容を表示するだけ
           if(values[row][col+1].length==0.0){//何もなければフラグをセット
             flag=1
           }
@@ -131,11 +131,11 @@ function sendToLine() {
   if(night=='Clouds')night='☁';
   if(night=='Clear')night='☀';
 
-  if((dayWeekstr==='火'||dayWeekstr==='木'||dayWeekstr==='金' ) && flag===0){//平日の場合のメッセージ処理
+  if((dayWeekstr==='月'||dayWeekstr==='火'||dayWeekstr==='水'||dayWeekstr==='木'||dayWeekstr==='金' ) && flag===0){//平日の場合のメッセージ処理
     sendLineNotification(accessToken,'\n'+ year+'年'+mon+'月'+currentDate+'日'+'\n本日の参加者:\n' +cellValues + '\n\n最低気温: '+MIN+' ℃\n最高気温: ' +MAX+'℃\n\n'+' 朝 | 昼 | 夜\n－－－－－\n'+morning+'|'+san+'|'+night);
   }
   
-  if((dayWeekstr==='月'||dayWeekstr==='水'||dayWeekstr === '日'|| dayWeekstr === '土')&& flag===0){//休日の場合のメッセージ処理
+  if((dayWeekstr === '日'|| dayWeekstr === '土')&& flag===0){//休日の場合のメッセージ処理
     sendLineNotification(accessToken,'\nおはようございます!\n本日は\n'+cellValues+'\n\nです!'+ '\n\n最低気温: '+MIN+' ℃\n最高気温: ' +MAX+'℃\n\n'+' 朝 | 昼 | 夜\n－－－－－\n'+morning+'|'+san+'|'+night);
   }
   
@@ -174,7 +174,7 @@ function sendToLine2(){
       //ここまではsendToLine関数と同じ処理
       // 日付が条件を満たす場合に通知を送信
       if (currentDate === values[row][col]) {
-        if(dayWeekstr==='月'||dayWeekstr==='水'||dayWeekstr==='木'){//次の日が全員参加じゃない曜日を指定
+        if(dayWeekstr==='日'||dayWeekstr==='月'||dayWeekstr==='火'||dayWeekstr==='水'||dayWeekstr==='木'){//次の日が全員参加じゃない曜日を指定
           if(values[row][col+3].length==0.0){//col+3にすることで次の日のセルを指定できる
             flag=1
           }
