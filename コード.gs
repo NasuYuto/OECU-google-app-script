@@ -318,7 +318,7 @@ function addsite(){
 
   for(i=0;i<=14;i+=2){
     if(values[0][i]==dayOfWeek){
-      weekcount=i;
+      weekcount=i;//一日が何行目から始まるか
       break;
     }
   }
@@ -329,7 +329,7 @@ function addsite(){
         j=weekcount;
         flag=1;
       }
-      if(count<=monthcount){
+      if(count<=monthcount){//その月の日数分
        days[i*5][j]=count;
       }
       else{
@@ -352,7 +352,7 @@ function addsite(){
   // var existingData = sh2.getRange(3,2,30,13).getValue();
   // var updatedData = existingData.concat(days);
   // sh2.getRange(3,2,30,13).setValues(updatedData)
-  sh2.getRange(3,2,30,13).setValues(days);//dayの中身は日付の数字だけだが、予定欄のところもベースシートの内容を置いてあげれば新たに作成されたカレンダーに予定の内容が書き込まれそう　
+  sh2.getRange(3,2,30,13).setValues(days);
 }
 
 //曜日を所得
