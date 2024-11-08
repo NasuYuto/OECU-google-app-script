@@ -356,6 +356,7 @@ function addsite(){
   sh2.getRange(3,2,30,13).setValues(days);//dayの中身は日付の数字だけだが、予定欄のところもベースシートの内容を置いてあげれば新たに作成されたカレンダーに予定の内容が書き込まれそう　
 }
 
+//曜日を所得
 function getDayOfWeek(year, month, day) {
     var daysOfWeek = ['日', '月', '火', '水', '木', '金', '土']
     var date = new Date(year, month , day);
