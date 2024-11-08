@@ -1,4 +1,5 @@
- function sendToLine() {
+//カレンダーから参加する部員の名前・天気を出力する関数
+function sendToLine() {
   // LINE Notifyのアクセストークンを設定
   //var accessToken2 = 'LineNotifyのアクセストークン';//幹部
   //var accessToken = 'LineNotifyのアクセストークン';//個人
@@ -197,6 +198,7 @@ function sendToLine2(){
 
 }
 
+//出力する前に学年順にソートを行う関数
 function soot(charsets){
  var sheet = SpreadsheetApp.openById("任意のSpredId").getSheetByName("任意のSpredSheetId");
   var lastRow = sheet.getLastRow();
