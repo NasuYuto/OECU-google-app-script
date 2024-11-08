@@ -95,7 +95,7 @@ function sendToLine() {
 
       // 日付が条件を満たす場合に通知を送信
       if (currentDate === values[row][col]) { //今日の日付とスプレッドシートに記入された数値が一致した場合次の処理
-        if(dayWeekstr==='火'||dayWeekstr==='木'||dayWeekstr==='金' ){ //平日の時の処理
+        if(dayWeekstr==='月'||dayWeekstr==='火'||dayWeekstr==='水'||dayWeekstr==='木'||dayWeekstr==='金' ){ //平日の時の処理
           if(values[row][col+1].length==0.0){ //セルの中身が何もない場合の処理
           //if文でcolではなくcol+1にするかというと、スプレッドシートでは日付の一つ右のセルに名前が記入されているからその値を読むために+1を加えている。
             flag=1
