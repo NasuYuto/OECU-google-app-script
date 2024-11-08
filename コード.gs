@@ -288,8 +288,7 @@ function addsite(){
   }
   else if( mon ==2 && year%4==0){
     monthcount=29
-  }
-  else if(mon==2){
+  }else {
     monthcount=28;
   }
   
